@@ -37,7 +37,7 @@ public class UsersController {
         updatedUser.setUsername(newUser.getUsername());
         updatedUser.setEmail(newUser.getEmail());
         updatedUser.setPassword(newUser.getPassword());
-        updatedUser.setDate(newUser.getDate());
+        updatedUser.setCreatedAt(newUser.getCreatedAt());
         updatedUser.setRole(newUser.getRole());
         System.out.println(updatedUser);
     }

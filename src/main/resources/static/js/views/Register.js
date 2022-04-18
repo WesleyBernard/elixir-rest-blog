@@ -3,7 +3,7 @@ import CreateView from "../createView.js"
 export default function Register(props) {
     return `
     <!DOCTYPE html>
-        <html>
+        <html lang="en">
             <head>
                 <meta charset="UTF-8"/>
                 <title>Register</title>
