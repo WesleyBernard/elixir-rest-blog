@@ -25,7 +25,7 @@ public class PostController {
     }
 
     @GetMapping("{PostId}")
-    public Post getById(@PathVariable Long PostId) {
+    private Post getById(@PathVariable Long PostId) {
         return new Post(PostId, "This is your fake post", "Wesley is really really cool");
     }
 

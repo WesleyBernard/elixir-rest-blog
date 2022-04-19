@@ -3,6 +3,8 @@ package com.example.restblog.web;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +27,16 @@ public class UsersController {
         return new User(id, "BlackFidelis", "UwU@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
     }
 
+    @GetMapping("username")
+    private User getByUsername(@RequestParam(name = "username") String username) {
+        return new User(0, username, "UwU@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
+    }
+
+    @GetMapping("email")
+    private User getByEmail(@RequestParam(name = "email") String email) {
+        return new User(0, "BlackFidelis", email, "123", LocalDate.now(), User.Role.ADMIN);
+    }
+
     @PostMapping
     private void createUser(@RequestBody User newUser) {
         System.out.println("Adding user...." + newUser);
@@ -40,6 +52,13 @@ public class UsersController {
         updatedUser.setCreatedAt(newUser.getCreatedAt());
         updatedUser.setRole(newUser.getRole());
         System.out.println(updatedUser);
+    }
+
+    @PutMapping("{id}/updatepassword")
+    private void updatePassword(   @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
+        User oldBoi = new User(id, "BlackFidelis", "Cracked@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
+        System.out.println("old password was: " + oldPassword);
+        System.out.println("New password is: " + newPassword);
     }
 
     @DeleteMapping("{id}")
