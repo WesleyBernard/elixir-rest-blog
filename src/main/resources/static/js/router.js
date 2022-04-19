@@ -9,6 +9,7 @@ import Register from "./views/Register.js"
 import {RegisterEvent} from "./views/Register.js";
 import {listeners} from "./views/PostIndex.js";
 import User from "./views/User.js";
+import {updates} from "./views/User.js";
 
 /**
  * Returns the route object for a specific route based on the given URI
@@ -70,7 +71,8 @@ export default function router(URI) {
                 users: '/api/users/5'
             },
             uri: '/user',
-            title: 'User'
+            title: 'User',
+            viewEvent: updates
         }
     };
 

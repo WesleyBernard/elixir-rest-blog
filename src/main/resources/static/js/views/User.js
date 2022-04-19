@@ -14,8 +14,29 @@ return `<!DOCTYPE html>
 <label for="password"></label>
 <h5>password</h5>
 <input type="text" name="password" id="password" value="${props.users.password}">
+<label for="email"></label>
+<h5>email</h5>
+<input type="text", name="email", id="email", value="${props.users.email}" disabled>
+<label for="changePassword"></label>
+<h5>Please enter the new password below</h5>
+<input type="password" name="changePassword" id="changePassword" placeholder="new password here">
+
+<button id="changePasswordBtn"> submit</button>
 
 </body>
 </html>`;
 
+}
+
+const changePassword = function (e) {
+    $("#changePasswordBtn").click(function (e) {
+        fetch("http://localhost:8080/api/users/5/updatepassword?oldPassword=" + $("#password").val() + "&newPassword=" + $("#changePassword").val(), {
+            method: "put",
+            headers: { 'Content-Type': 'application/json' }
+        })
+    })
+}
+
+export function updates() {
+    changePassword()
 }
