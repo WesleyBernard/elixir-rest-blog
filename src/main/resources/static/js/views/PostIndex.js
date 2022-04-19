@@ -38,7 +38,7 @@ const editPost = function () {
             title: "asdasdkj",
             content: "waoid"
         }
-        fetch(baseUri + "/8", {
+        fetch(baseUri + "/" + this.id, {
             method: "put",
             body: JSON.stringify(ppost),
             headers: { 'Content-Type': 'application/json' }

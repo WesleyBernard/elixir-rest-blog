@@ -55,10 +55,11 @@ public class UsersController {
     }
 
     @PutMapping("{id}/updatepassword")
-    private void updatePassword(   @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
-        User oldBoi = new User(id, "BlackFidelis", "Cracked@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
+    private void updatePassword(   @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @RequestParam String newPassword) {
+        User oldBoi = new User(id, "BlackFidelis", "Cracked@gmail.com", newPassword, LocalDate.now(), User.Role.ADMIN);
         System.out.println("old password was: " + oldPassword);
         System.out.println("New password is: " + newPassword);
+        System.out.println(oldBoi);
     }
 
     @DeleteMapping("{id}")
