@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.Collections;
 
 
 @NoArgsConstructor
@@ -19,6 +21,7 @@ private String email;
 private String password;
 private LocalDate createdAt;
 private Role role;
+//Collection<Post> post;
 
 public enum Role {USER, ADMIN}
 }

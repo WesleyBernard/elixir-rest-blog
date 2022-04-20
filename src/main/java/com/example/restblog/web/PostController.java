@@ -2,6 +2,7 @@ package com.example.restblog.web;
 
 
 import com.example.restblog.data.Post;
+import com.example.restblog.data.PostsRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -11,6 +12,13 @@ import java.util.List;
 @RestController
 @RequestMapping( value = "/api/posts", headers = "Accept=application/json")
 public class PostController {
+
+    private PostsRepository postsRepository;
+
+    public PostController(PostsRepository postsRepository) {
+        this.postsRepository = postsRepository;
+    }
+
 
     @GetMapping
     private List<Post> getAll() {
@@ -31,7 +39,8 @@ public class PostController {
 
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
-        System.out.println("Adding post...." + newPost);
+        Post postToAdd = new Post(newPost.getTitle(), newPost.getContent());
+        System.out.println("Post created");
 
     }
 
