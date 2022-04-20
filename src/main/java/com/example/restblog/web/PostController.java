@@ -22,43 +22,36 @@ public class PostController {
 
     @GetMapping
     private List<Post> getAll() {
-        ArrayList<Post> dummyPosts = new ArrayList<>();
-
-        dummyPosts.add(new Post(1L, "Post one", "You know how we do it here"));
-        dummyPosts.add(new Post(2L, "Post dos", "omegalol"));
-        dummyPosts.add(new Post(3L, "Post three, but in another language", "Elixir? More like a mixer. Because we're all friends not because of like anything weird"));
-
-        return dummyPosts;
-
+        return postsRepository.findAll();
     }
 
     @GetMapping("{PostId}")
     private Post getById(@PathVariable Long PostId) {
-        return new Post(PostId, "This is your fake post", "Wesley is really really cool");
+        return postsRepository.getById(PostId);
     }
 
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
         Post postToAdd = new Post(newPost.getTitle(), newPost.getContent());
+        postsRepository.save(postToAdd);
         System.out.println("Post created");
 
     }
 
     @PutMapping("{id}")
     private void updatePost(@RequestBody Post post, @PathVariable Long id) {
-        Post updatedPost = new Post();
+        Post updatedPost = postsRepository.getById(id);
         updatedPost.setContent(post.getContent());
         updatedPost.setTitle(post.getTitle());
-        updatedPost.setId(id);
+        postsRepository.save(updatedPost);
         System.out.println(updatedPost);
     }
 
     @DeleteMapping("{id}")
     private void deletePost(@PathVariable Long id) {
+        Post deleteMe = postsRepository.getById(id);
+        postsRepository.delete(deleteMe);
         System.out.println("Deleting the post with the id of: " + id);
-
     }
-
-
 
 }

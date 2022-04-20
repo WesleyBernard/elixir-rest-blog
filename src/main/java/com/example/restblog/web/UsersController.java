@@ -1,6 +1,7 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.User;
+import com.example.restblog.data.UsersRepository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,18 +14,22 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "api/users", headers = "Accept=application/json")
 public class UsersController {
+    private UsersRepository usersRepository;
+
+    public UsersController(UsersRepository usersRepository) {
+        this.usersRepository = usersRepository;
+    }
 
     @GetMapping
     private List<User> getAll(){
         ArrayList<User> dummies = new ArrayList<>();
-        User wesley = new User(0, "BlackFidelis", "UwU@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
-        dummies.add(wesley);
-        return dummies;
+
+        return usersRepository.findAll();
     }
 
     @GetMapping("{id}")
     private User getById(@PathVariable long id){
-        return new User(id, "BlackFidelis", "UwU@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
+        return usersRepository.getById(id);
     }
 
     @GetMapping("username")
