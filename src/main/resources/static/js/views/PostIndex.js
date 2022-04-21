@@ -1,5 +1,8 @@
+import createView from "../createView.js";
+
 const baseUri = "http://localhost:8080/api/posts";
 export default function PostIndex(props) {
+    console.log(props)
 
     return `
         <header>
@@ -7,7 +10,7 @@ export default function PostIndex(props) {
         </header>
         <main>
             <div>
-                ${props.posts.map(post => `<h3>${post.title}</h3> <p class="content">${post.content}</p> <button class="edit" id=${post.id}> edit </button> <button class="delete" id=${post.id}> delete </button>`).join('')}   
+                ${props.posts.map(post => `<h3>${post.title}</h3> <p class="content">${post.content}</p> <div> ${getCategories(post.categories)} </div> <button class="edit" id=${post.id}> edit </button> <button class="delete" id=${post.id}> delete </button>`).join('')}   
             </div>
             
             <br>
@@ -18,17 +21,15 @@ export default function PostIndex(props) {
 }
 const deletePost = function () {
     $(".delete").click(function (e) {
-        fetch(baseUri)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                data.forEach(post => {
-                    if (post.id == this.id) {
-                        data.pop()
-                        console.log(data)
-                    }
-                })
-            })
+        fetch(baseUri + "/" +this.id, {
+            method: "delete",
+        }).then(res => {
+        console.log(res.status)
+        createView("/posts")
+    }).catch(error => {
+        console.log(error);
+        createView("/posts");
+    })
     })
 }
 
@@ -42,8 +43,23 @@ const editPost = function () {
             method: "put",
             body: JSON.stringify(ppost),
             headers: { 'Content-Type': 'application/json' }
-        })
+        }).then(res => {
+        console.log(res.status)
+        createView("/posts")
+    }).catch(error => {
+        console.log(error);
+        createView("/posts");
     })
+    })
+}
+
+const getCategories = function (categoryArray) {
+    let html = `<div>`
+    for (let i = 0; i < categoryArray.length; i++) {
+        html +=`<span> ${categoryArray[i].name} </span>`
+    }
+    html += `</div>`;
+    return html
 }
 
 const createPost = function () {
@@ -56,7 +72,13 @@ const createPost = function () {
         fetch(baseUri, {
             method: "post",
             body: JSON.stringify(ppost),
-            headers: { 'Content-Type': 'application/json' }
+            headers: {'Content-Type': 'application/json'}
+        }).then(res => {
+            console.log(res.status)
+            createView("/posts")
+        }).catch(error => {
+            console.log(error);
+            createView("/posts");
         })
     })
 }

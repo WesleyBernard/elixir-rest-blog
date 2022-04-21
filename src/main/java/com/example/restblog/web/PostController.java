@@ -1,12 +1,12 @@
 package com.example.restblog.web;
 
 
-import com.example.restblog.data.Post;
-import com.example.restblog.data.PostsRepository;
+import com.example.restblog.data.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -14,9 +14,13 @@ import java.util.List;
 public class PostController {
 
     private PostsRepository postsRepository;
+    private UsersRepository usersRepository;
+    private CategoriesRepository categoriesRepository;
 
-    public PostController(PostsRepository postsRepository) {
+    public PostController(PostsRepository postsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository) {
         this.postsRepository = postsRepository;
+        this.usersRepository = usersRepository;
+        this.categoriesRepository = categoriesRepository;
     }
 
 
@@ -26,14 +30,18 @@ public class PostController {
     }
 
     @GetMapping("{PostId}")
-    private Post getById(@PathVariable Long PostId) {
-        return postsRepository.getById(PostId);
+    private Optional<Post> getById(@PathVariable Long PostId) {
+        return postsRepository.findById(PostId);
     }
 
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
-        Post postToAdd = new Post(newPost.getTitle(), newPost.getContent());
-        postsRepository.save(postToAdd);
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(categoriesRepository.findCategoryByName("Gaming"));
+        categories.add(categoriesRepository.findCategoryByName("Node"));
+        newPost.setAuthor(usersRepository.getById(1L));
+        newPost.setCategories(categories);
+        postsRepository.save(newPost);
         System.out.println("Post created");
 
     }
@@ -44,7 +52,6 @@ public class PostController {
         updatedPost.setContent(post.getContent());
         updatedPost.setTitle(post.getTitle());
         postsRepository.save(updatedPost);
-        System.out.println(updatedPost);
     }
 
     @DeleteMapping("{id}")

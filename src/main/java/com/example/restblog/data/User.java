@@ -1,5 +1,6 @@
 package com.example.restblog.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,7 +31,9 @@ public class User {
     private LocalDate createdAt;
     @Column(nullable = false)
     private Role role;
-//Collection<Post> post;
+    @OneToMany(mappedBy = "author")
+    @JsonIgnoreProperties("author")
+    Collection<Post> post;
 
 public enum Role {USER, ADMIN}
 }
