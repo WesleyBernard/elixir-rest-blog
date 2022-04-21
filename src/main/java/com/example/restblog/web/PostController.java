@@ -34,6 +34,11 @@ public class PostController {
         return postsRepository.findById(PostId);
     }
 
+    @GetMapping("byCategory")
+    private List<Post>getByCategory(@RequestParam(name = "category") String category) {
+        return postsRepository.findByCategories(categoriesRepository.findCategoryByName(category));
+    }
+
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
         ArrayList<Category> categories = new ArrayList<>();

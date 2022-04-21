@@ -30,15 +30,15 @@ public class UsersController {
         return usersRepository.getById(id);
     }
 
-//    @GetMapping("username")
-//    private User getByUsername(@RequestParam(name = "username") String username) {
-//        return new User(0, username, "UwU@gmail.com", "123", LocalDate.now(), User.Role.ADMIN);
-//    }
-//
-//    @GetMapping("email")
-//    private User getByEmail(@RequestParam(name = "email") String email) {
-//        return new User(0, "BlackFidelis", email, "123", LocalDate.now(), User.Role.ADMIN);
-//    }
+    @GetMapping("username")
+    private User getByUsername(@RequestParam(name = "username") String username) {
+        return usersRepository.findByUsername(username);
+    }
+
+    @GetMapping("email")
+    private User getByEmail(@RequestParam(name = "email") String email) {
+        return usersRepository.findByEmail(email);
+    }
 
     @PostMapping
     private void createUser(@RequestBody User newUser) {
@@ -61,9 +61,7 @@ public class UsersController {
 
 //    @PutMapping("{id}/updatepassword")
 //    private void updatePassword(   @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @RequestParam String newPassword) {
-//        User oldBoi = new User(id, "BlackFidelis", "Cracked@gmail.com", newPassword, LocalDate.now(), User.Role.ADMIN);
-//        System.out.println("old password was: " + oldPassword);
-//        System.out.println("New password is: " + newPassword);
+//        User oldBoi = usersRepository.findById(id);
 //        System.out.println(oldBoi);
 //    }
 
