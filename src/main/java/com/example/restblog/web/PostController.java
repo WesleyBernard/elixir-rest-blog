@@ -2,6 +2,8 @@ package com.example.restblog.web;
 
 
 import com.example.restblog.data.*;
+import com.example.restblog.services.EmailService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,18 +12,14 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping( value = "/api/posts", headers = "Accept=application/json")
 public class PostController {
 
     private PostsRepository postsRepository;
     private UsersRepository usersRepository;
     private CategoriesRepository categoriesRepository;
-
-    public PostController(PostsRepository postsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository) {
-        this.postsRepository = postsRepository;
-        this.usersRepository = usersRepository;
-        this.categoriesRepository = categoriesRepository;
-    }
+    private EmailService emailService;
 
 
     @GetMapping
@@ -48,6 +46,8 @@ public class PostController {
         newPost.setCategories(categories);
         postsRepository.save(newPost);
         System.out.println("Post created");
+
+        emailService.prepareAndSend(newPost, "Hello, Loser", "This is me making sure your dumb email works");
 
     }
 
