@@ -2,6 +2,8 @@ package com.example.restblog.web;
 
 import com.example.restblog.data.User;
 import com.example.restblog.data.UsersRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -10,13 +12,12 @@ import java.util.Optional;
 
 @CrossOrigin
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "api/users", headers = "Accept=application/json")
 public class UsersController {
-    private UsersRepository usersRepository;
+    private  final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsersController(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
 
     @GetMapping
     private List<User> getAll(){
@@ -40,8 +41,12 @@ public class UsersController {
 
     @PostMapping
     private void createUser(@RequestBody User newUser) {
-        User userToAdd = new User(0, newUser.getUsername(), newUser.getEmail(), newUser.getPassword(), LocalDate.now(), User.Role.USER, null);
-        usersRepository.save(userToAdd);
+        newUser.setRole(User.Role.ADMIN);
+        newUser.setCreatedAt(LocalDate.now());
+        String encryptedPassword = newUser.getPassword();
+        encryptedPassword = passwordEncoder.encode(encryptedPassword);
+        newUser.setPassword(encryptedPassword);
+        usersRepository.save(newUser);
         System.out.println("Adding user...." + newUser);
     }
 
