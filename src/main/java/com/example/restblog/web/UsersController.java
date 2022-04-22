@@ -4,11 +4,9 @@ import com.example.restblog.data.User;
 import com.example.restblog.data.UsersRepository;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController
@@ -26,8 +24,8 @@ public class UsersController {
     }
 
     @GetMapping("{id}")
-    private User getById(@PathVariable long id){
-        return usersRepository.getById(id);
+    private Optional<User> getById(@PathVariable long id){
+        return usersRepository.findById(id);
     }
 
     @GetMapping("username")
