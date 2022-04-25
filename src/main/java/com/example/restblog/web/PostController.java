@@ -4,6 +4,7 @@ package com.example.restblog.web;
 import com.example.restblog.data.*;
 import com.example.restblog.services.EmailService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -42,7 +43,7 @@ public class PostController {
         ArrayList<Category> categories = new ArrayList<>();
         categories.add(categoriesRepository.findCategoryByName("Gaming"));
         categories.add(categoriesRepository.findCategoryByName("Node"));
-        newPost.setAuthor(usersRepository.getById(1L));
+        newPost.setAuthor(usersRepository.getById(4L));
         newPost.setCategories(categories);
         postsRepository.save(newPost);
         System.out.println("Post created");
@@ -60,10 +61,11 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    private void deletePost(@PathVariable Long id) {
-        Post deleteMe = postsRepository.getById(id);
-        postsRepository.delete(deleteMe);
-        System.out.println("Deleting the post with the id of: " + id);
+    private void deletePost(@PathVariable Long id, OAuth2Authentication auth) {
+        if (postsRepository.getById(id).getAuthor().getEmail().equals(auth.getName())) {
+            postsRepository.deleteById(id);
+            System.out.println("Deleting the post with the id of: " + id);
+        }
     }
 
 }

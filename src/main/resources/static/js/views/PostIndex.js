@@ -24,6 +24,7 @@ const deletePost = function () {
     $(".delete").click(function (e) {
         fetch(baseUri + "/" +this.id, {
             method: "delete",
+            headers: getHeaders()
         }).then(res => {
         console.log(res.status)
         createView("/posts")
