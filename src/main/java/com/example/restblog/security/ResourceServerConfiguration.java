@@ -48,4 +48,28 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .accessDeniedHandler(new CustomAccessDeniedHandler());
     }
+
+//    @Override
+//    public void configure(HttpSecurity http) throws Exception {
+//        // TODO: Flesh out remaining secured endpoints
+//        http
+//                .cors()
+//                .and()
+//                .csrf()
+//                .disable()
+//                .formLogin()
+//                .disable()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+//                .antMatchers("/api/posts/**").hasAnyAuthority("ADMIN", "USER")
+//                .antMatchers("/api/users/**").hasAnyAuthority("ADMIN", "USER")
+//                .antMatchers("/api/**").authenticated()
+//                .antMatchers("/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .exceptionHandling().authenticationEntryPoint(customAuthenticationEntryPoint).accessDeniedHandler(new CustomAccessDeniedHandler());
+//    }
 }

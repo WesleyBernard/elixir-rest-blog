@@ -1,4 +1,5 @@
 import createView from "../createView.js";
+import {getHeaders} from "../auth.js";
 
 const baseUri = "http://localhost:8080/api/posts";
 export default function PostIndex(props) {
@@ -72,7 +73,7 @@ const createPost = function () {
         fetch(baseUri, {
             method: "post",
             body: JSON.stringify(ppost),
-            headers: {'Content-Type': 'application/json'}
+            headers: getHeaders()
         }).then(res => {
             console.log(res.status)
             createView("/posts")
