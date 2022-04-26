@@ -3,7 +3,9 @@ package com.example.restblog.web;
 import com.example.restblog.data.User;
 import com.example.restblog.data.UsersRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -20,28 +22,28 @@ public class UsersController {
 
 
     @GetMapping
-    private List<User> getAll(){
+    public List<User> getAll(){
         return usersRepository.findAll();
     }
 
     @GetMapping("{id}")
-    private Optional<User> getById(@PathVariable long id){
+    public Optional<User> getById(@PathVariable long id){
         return usersRepository.findById(id);
     }
 
     @GetMapping("username")
-    private User getByUsername(@RequestParam(name = "username") String username) {
+    public User getByUsername(@RequestParam(name = "username") String username) {
         return usersRepository.findByUsername(username);
     }
 
     @GetMapping("email")
-    private User getByEmail(@RequestParam(name = "email") String email) {
+    public User getByEmail(@RequestParam(name = "email") String email) {
         return usersRepository.findByEmail(email);
     }
 
     @PostMapping
-    private void createUser(@RequestBody User newUser) {
-        newUser.setRole(User.Role.ADMIN);
+    public void createUser(@RequestBody User newUser) {
+        newUser.setRole(User.Role.USER);
         newUser.setCreatedAt(LocalDate.now());
         String encryptedPassword = newUser.getPassword();
         encryptedPassword = passwordEncoder.encode(encryptedPassword);
@@ -50,8 +52,14 @@ public class UsersController {
         System.out.println("Adding user...." + newUser);
     }
 
+    @GetMapping("me")
+    @PreAuthorize("hasAuthority('ADMIN') || hasAuthority('USER')")
+    public User getCurrent(OAuth2Authentication auth) {
+        return usersRepository.findByEmail(auth.getName());
+    }
+
     @PutMapping("{id}")
-    private void updateUser(@RequestBody User newUser, @PathVariable long id) {
+    public void updateUser(@RequestBody User newUser, @PathVariable long id) {
         User updatedUser = new User();
         updatedUser.setId(id);
         updatedUser.setUsername(newUser.getUsername());
@@ -69,7 +77,7 @@ public class UsersController {
 //    }
 
     @DeleteMapping("{id}")
-    private void DeleteUser(@PathVariable long id){
+    public void DeleteUser(@PathVariable long id){
         System.out.println("deleting post with the id of: " + id);
     }
 }

@@ -10,13 +10,13 @@ return `<!DOCTYPE html>
 <form id="User-info"></form>
 <labe for="username"></labe>
 <h5>Username</h5>
-<input type="text" name="username" id="username" value="${props.users.username}" disabled>
+<input type="text" name="username" id="username" value="${props.user.username}" disabled>
 <label for="password"></label>
 <h5>password</h5>
-<input type="text" name="password" id="password" value="${props.users.password}">
+<input type="text" name="password" id="password" value="${props.user.password}">
 <label for="email"></label>
 <h5>email</h5>
-<input type="text", name="email", id="email", value="${props.users.email}" disabled>
+<input type="text", name="email", id="email", value="${props.user.email}" disabled>
 <label for="changePassword"></label>
 <h5>Please enter the new password below</h5>
 <input type="password" name="changePassword" id="changePassword" placeholder="new password here">
