@@ -4,6 +4,7 @@ package com.example.restblog.web;
 import com.example.restblog.data.*;
 import com.example.restblog.services.EmailService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,26 +26,26 @@ public class PostController {
 
 
     @GetMapping
-    private List<Post> getAll() {
+    public List<Post> getAll() {
         return postsRepository.findAll();
     }
 
     @GetMapping("{PostId}")
-    private Optional<Post> getById(@PathVariable Long PostId) {
+    public Optional<Post> getById(@PathVariable Long PostId) {
         return postsRepository.findById(PostId);
     }
 
     @GetMapping("byCategory")
-    private List<Post>getByCategory(@RequestParam(name = "category") String category) {
+    public List<Post>getByCategory(@RequestParam(name = "category") String category) {
         return postsRepository.findByCategories(categoriesRepository.findCategoryByName(category));
     }
 
     @PostMapping
-    private void createPost(@RequestBody Post newPost) {
+    public void createPost(@RequestBody Post newPost, OAuth2Authentication auth) {
         ArrayList<Category> categories = new ArrayList<>();
-        categories.add(categoriesRepository.findCategoryByName("Gaming"));
-        categories.add(categoriesRepository.findCategoryByName("Node"));
-        newPost.setAuthor(usersRepository.getById(4L));
+        categories.add(categoriesRepository.findCategoryByName("Development"));
+        categories.add(categoriesRepository.findCategoryByName("Java"));
+        newPost.setAuthor(usersRepository.findByEmail(auth.getName()));
         newPost.setCategories(categories);
         postsRepository.save(newPost);
         System.out.println("Post created");
@@ -54,7 +55,7 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    private void updatePost(@RequestBody Post post, @PathVariable Long id) {
+    public void updatePost(@RequestBody Post post, @PathVariable Long id) {
         Post updatedPost = postsRepository.getById(id);
         updatedPost.setContent(post.getContent());
         updatedPost.setTitle(post.getTitle());
@@ -62,14 +63,10 @@ public class PostController {
     }
 
     @DeleteMapping("{id}")
-    private void deletePost(@PathVariable Long id, OAuth2Authentication auth) {
-        if (postsRepository.getById(id).getAuthor().getEmail().equals(auth.getName()) || auth.getAuthorities().contains(User.Role.ADMIN)) {
+    @PreAuthorize("hasAuthority('ADMIN') || @postsRepository.getById(#id).getAuthor().getEmail().equals(#auth.getName())")
+    public void deletePost(@PathVariable Long id, OAuth2Authentication auth) {
             System.out.println(auth.getAuthorities());
             postsRepository.deleteById(id);
             System.out.println("Deleting the post with the id of: " + id);
-        } else {
-            System.out.println(auth.getAuthorities());
         }
-    }
-
 }
