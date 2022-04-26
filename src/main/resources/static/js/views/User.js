@@ -1,3 +1,5 @@
+import {getHeaders} from "../auth.js";
+
 export default function User(props) {
 return `<!DOCTYPE html>
 <html lang="en">
@@ -13,7 +15,7 @@ return `<!DOCTYPE html>
 <input type="text" name="username" id="username" value="${props.user.username}" disabled>
 <label for="password"></label>
 <h5>password</h5>
-<input type="text" name="password" id="password" value="${props.user.password}">
+<input type="text" name="password" id="password" value="${props.user.password}" disabled>
 <label for="email"></label>
 <h5>email</h5>
 <input type="text", name="email", id="email", value="${props.user.email}" disabled>
@@ -30,9 +32,9 @@ return `<!DOCTYPE html>
 
 const changePassword = function (e) {
     $("#changePasswordBtn").click(function (e) {
-        fetch("http://localhost:8080/api/users/5/updatepassword?oldPassword=" + $("#password").val() + "&newPassword=" + $("#changePassword").val(), {
-            method: "put",
-            headers: { 'Content-Type': 'application/json' }
+        fetch("http://localhost:8080/api/users/updatepassword?oldPassword=" + $("#password").val() + "&newPassword=" + $("#changePassword").val(), {
+            method: "PUT",
+            headers: getHeaders()
         })
     })
 }

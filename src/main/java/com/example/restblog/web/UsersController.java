@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -70,11 +71,17 @@ public class UsersController {
         System.out.println(updatedUser);
     }
 
-//    @PutMapping("{id}/updatepassword")
-//    private void updatePassword(   @PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @RequestParam String newPassword) {
-//        User oldBoi = usersRepository.findById(id);
-//        System.out.println(oldBoi);
-//    }
+    @PutMapping("updatepassword")
+    private void updatePassword(@RequestParam(required = false) String oldPassword, @Valid @RequestParam String newPassword, OAuth2Authentication auth) {
+        System.out.println(auth.getName());
+        User user = usersRepository.findByEmail(auth.getName());
+        if (passwordEncoder.encode(user.getPassword()).equals(oldPassword)) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+        } else {
+            System.out.println("Old password didn't match password for the current user");
+        }
+
+    }
 
     @DeleteMapping("{id}")
     public void DeleteUser(@PathVariable long id){
