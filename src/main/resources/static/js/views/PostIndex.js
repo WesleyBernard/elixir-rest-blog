@@ -11,7 +11,7 @@ export default function PostIndex(props) {
         </header>
         <main>
             <div>
-                ${props.posts.map(post => `<h3>${post.title}</h3> <p class="content">${post.content}</p> <div> ${getCategories(post.categories)} </div> <button class="edit" id=${post.id}> edit </button> <button class="delete" id=${post.id}> delete </button>`).join('')}   
+                ${props.posts.map(post => `<h3>${post.title}</h3> <p class="content">${post.content}</p> <div> ${getCategories(post.categories)} </div> <div> ${post.author.username} </div> <button class="edit" id=${post.id}> edit </button> <button class="delete" id=${post.id}> delete </button>`).join('')}   
             </div>
             
             <br>
