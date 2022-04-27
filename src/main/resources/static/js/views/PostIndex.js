@@ -18,9 +18,9 @@ export default function PostIndex(props) {
             
             <div>
                 <h2>Add a post or whatevah</h2>
-                <p> Title </p>>
+                <p> Title </p>
                 <input id="newTitle" type="text"> 
-                <p> Content </p>>
+                <p> Content </p>
                 <input id="newContent" type="text">
                 <button class="addPost"> add post</button>
             </div>
