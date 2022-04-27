@@ -6,6 +6,7 @@ export default function PostIndex(props) {
     console.log(props)
 
     return `
+        <div class="container-fluid">
         <header>
             <h1>Posts Page</h1>
         </header>
@@ -23,10 +24,9 @@ export default function PostIndex(props) {
                 <p> Content </p>
                 <input id="newContent" type="text">
                 <button class="addPost"> add post</button>
-            </div>
-            
-            
+            </div>  
         </main>
+        </div>
     `;
 }
 const deletePost = function () {
