@@ -15,7 +15,16 @@ export default function PostIndex(props) {
             </div>
             
             <br>
-            <button class="addPost"> add post</button>
+            
+            <div>
+                <h2>Add a post or whatevah</h2>
+                <p> Title </p>>
+                <input id="newTitle" type="text"> 
+                <p> Content </p>>
+                <input id="newContent" type="text">
+                <button class="addPost"> add post</button>
+            </div>
+            
             
         </main>
     `;
@@ -44,7 +53,7 @@ const editPost = function () {
         fetch(baseUri + "/" + this.id, {
             method: "put",
             body: JSON.stringify(ppost),
-            headers: { 'Content-Type': 'application/json' }
+            headers: getHeaders()
         }).then(res => {
         console.log(res.status)
         createView("/posts")
@@ -67,8 +76,8 @@ const getCategories = function (categoryArray) {
 const createPost = function () {
     $(".addPost").click(function (e) {
         let ppost = {
-            title: "Hello World",
-            content: "Goodbye World",
+            title: $("#newTitle").val(),
+            content: $("#newContent").val(),
             id: 0
         }
         fetch(baseUri, {

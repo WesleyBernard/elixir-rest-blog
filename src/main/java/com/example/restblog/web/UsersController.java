@@ -73,12 +73,10 @@ public class UsersController {
 
     @PutMapping("updatepassword")
     private void updatePassword(@RequestParam(required = false) String oldPassword, @Valid @RequestParam String newPassword, OAuth2Authentication auth) {
-        System.out.println(auth.getName());
         User user = usersRepository.findByEmail(auth.getName());
-        if (passwordEncoder.encode(user.getPassword()).equals(oldPassword)) {
+        if (oldPassword.equals(user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword));
-        } else {
-            System.out.println("Old password didn't match password for the current user");
+            usersRepository.save(user);
         }
 
     }

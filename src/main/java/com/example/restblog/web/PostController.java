@@ -55,7 +55,8 @@ public class PostController {
     }
 
     @PutMapping("{id}")
-    public void updatePost(@RequestBody Post post, @PathVariable Long id) {
+    @PreAuthorize("hasAuthority('ADMIN') || @postsRepository.getById(#id).getAuthor().getEmail().equals(#auth.getName())")
+    public void updatePost(@RequestBody Post post, @PathVariable Long id, OAuth2Authentication auth) {
         Post updatedPost = postsRepository.getById(id);
         updatedPost.setContent(post.getContent());
         updatedPost.setTitle(post.getTitle());
