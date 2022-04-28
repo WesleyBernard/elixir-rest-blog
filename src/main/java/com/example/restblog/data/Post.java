@@ -22,7 +22,7 @@ public class Post {
     @Column(nullable = false)
     private String content;
     @ManyToOne
-    @JsonIgnoreProperties({"posts", "password"})
+    @JsonIgnoreProperties({"post", "password"})
     private User author;
     @ManyToMany(
             fetch = FetchType.LAZY,
