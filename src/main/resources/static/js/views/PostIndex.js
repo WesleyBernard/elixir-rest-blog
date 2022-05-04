@@ -47,8 +47,8 @@ const deletePost = function () {
 const editPost = function () {
     $(".edit").click(function (e) {
         let ppost = {
-            title: "asdasdkj",
-            content: "waoid"
+            title: $("#newTitle").val(),
+            content: $("#newContent").val()
         }
         fetch(baseUri + "/" + this.id, {
             method: "put",
